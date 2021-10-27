@@ -1,15 +1,15 @@
 # HighDimRD
-This repository provides R-Code for easy inclusion of high-dimensional covariates in regression discontinuity design problems.
+This repository contains the R-Package HighDimRD for easy inclusion of high-dimensional covariates in regression discontinuity design problems. The main function for this purpose is HighDim_rd. Details of its functionality are contained in the paper "Inference in Regression Discontinuity Designs with High-Dimensional Covariates" which I have written with Christoph Rothe. A pre-print is available on <a href="https://arxiv.org/abs/2110.13725">arxiv</a>. The basic functionality is that in a first step the algorithm selects relevant covariates by means of a Lasso procedure. In a second step the treatment effect is estimated by using these selected covariates. In addition, there are some functions which create interactions, cross-interactions and Fourier expansions in order to generate high-dimensional covariates.
 
 The package can be installed like this:
-<code>
-library(devtools) <br>
-install_github("akreiss/HighDimRD") <br>
-library(HighDimRD) <br>
-</code>
+```
+library(devtools)
+install_github("akreiss/HighDimRD")
+library(HighDimRD)
+```
 
 Here is an Example for how the package can be used:
-<code class="language-R">
+```
 ## Load Libraries
 library(mvtnorm)
 
@@ -45,4 +45,4 @@ Z_HighDim <- cbind(Z,interaction_terms(Z),Z1,interaction_terms(Z1))
 cov_rd_CV  <- HighDim_rd(Y,x,Z_HighDim,tpc="CV")
 cov_rd_BCH <- HighDim_rd(Y,x,Z_HighDim,tpc="BCH")
 cov_rd_LV  <- HighDim_rd(Y,x,Z_HighDim,tpc="LV")
-</code>
+```
