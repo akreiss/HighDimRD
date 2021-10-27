@@ -1,0 +1,31 @@
+Package: HighDimRD
+Title: RDD Estimation Using High-Dimensional Covariates
+Version: 1.0
+Authors@R: c(
+    person(given = "Alexander",
+           family = "Kreiss",
+           role = c("aut", "cre"),
+           email = "a.kreiss@lse.ac.uk"),
+    person(given = "Christoph",
+           family = "Rothe",
+           role = c("aut"),
+           email = "rothe@vwl.uni-mannheim.de"))
+Description: This package povides functions for the inclusion of high-dimensio-
+    nal covariates in regression discontinuity problems. The main function for
+    this purpose is HighDim_rd. Details of its functionality are contained in
+    the paper Kreiss and Rothe (2021). The basic functionality is that in a
+    first step the algorithm selects relevant covariates by means of a Lasso
+    procedure. In a second step the treatment effect is estimated by using these
+    selected covariates. In addition, there are some functions which create in-
+    teractions, cross-interactions and Fourier expansions in order to generate
+    high-dimensional covariates.
+URL: https://github.com/akreiss/HighDimRD
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports: 
+    glmnet,
+    rdrobust,
+    Matrix
