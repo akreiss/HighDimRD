@@ -3,9 +3,9 @@ This repository provides R-Code for easy inclusion of high-dimensional covariate
 
 The package can be installed like this:
 <code>
-library(devtools)
-install_github("akreiss/HighDimRD")
-library(HighDimRD)
+library(devtools) <br>
+install_github("akreiss/HighDimRD") <br>
+library(HighDimRD) <br>
 </code>
 
 Here is an Example for how the package can be used:
