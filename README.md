@@ -9,7 +9,7 @@ library(HighDimRD)
 </code>
 
 Here is an Example for how the package can be used:
-<code>
+<code class="language-R">
 ## Load Libraries
 library(mvtnorm)
 
