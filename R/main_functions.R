@@ -187,7 +187,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
     ## Tuning Parameter chocice based on Chernozhukov et al.
     V <- cbind(1,Tmod,Xmod,TXmod)
     weights <- kernel_factor[relevant_indices]
-    out <- BCHtpc(Ymod,V,Zmod,weights,n,bfactor*b$bws[1])
+    out <- BCHtpc(Ymod,V,Zmod,weights,n,bfactor*b)
     Z_pars <- out$par
     theta_tilde <- out$theta_tilde
   } else if(tpc=="OPC") {
