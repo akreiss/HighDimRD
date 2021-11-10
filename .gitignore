@@ -1,1 +1,4 @@
-.Rproj.user
+# Ignore RStudio Files
+.Rbuildignore
+.Rhistory
+HighDimRD.Rproj
