@@ -1,11 +1,14 @@
 # HighDimRD
 This repository contains the R-Package HighDimRD for easy inclusion of high-dimensional covariates in regression discontinuity design problems. The main function for this purpose is HighDim_rd. Details of its functionality are contained in the paper "Inference in Regression Discontinuity Designs with High-Dimensional Covariates" which I have written with Christoph Rothe. A pre-print is available on <a href="https://arxiv.org/abs/2110.13725">arxiv</a>. The basic functionality is that in a first step the algorithm selects relevant covariates by means of a Lasso procedure. In a second step the treatment effect is estimated by using these selected covariates. In addition, there are some functions which create interactions, cross-interactions and Fourier expansions in order to generate high-dimensional covariates.
 
-The package can be installed like this:
+For the package to work, the packages glmnet, Matrix, rdrobust and RDHonest are required. The package and all its dependencies can be installed like this:
 ```
-library(devtools)
+library(remotes)
+install_github("kolesarm/RDHonest")
+library(RDHonest)
 install_github("akreiss/HighDimRD")
 library(HighDimRD)
+
 ```
 
 Here is an Example for how the package can be used:
