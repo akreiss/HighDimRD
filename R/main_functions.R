@@ -29,7 +29,8 @@
 #'   default is c=0.
 #' @param rd Sets which RD functions should be used to find bandwidths,
 #'   estimators and confidence sets. If "honest", then the RDHonest package is
-#'   used. If "robust", then the rdrobust package is used.
+#'   used. In this case the user has to specify C and should be aware of sclass.
+#'   If "robust", then the rdrobust package is used.
 #' @param niveau Niveau of the computed confidence set, between 0 and 1. Default
 #'   is 0.95.
 #' @param b Reference bandwidth used for doing the model selection step. If
@@ -55,21 +56,20 @@
 #'   uniform.
 #' @param alpha,M,L Parameters for "LV" method for tuning parameter choice,
 #'   ignored if tpc!="LV".
-#' @param My,My_tilde,sclass Parameter which are used for RDHonest: My and
-#'   My_tilde are the bounds in the smoothness classe specified in sclass. The
-#'   default sclass is T, see RDHonest for details. My and My_tilde must be
-#'   specified by the user.
 #' @param OPC Parameter for "OPC" method for tuning parameter choice, ignored if
 #'   tpc!="OPC".
+#' @param C,sclass Parameters which are used for RDHonest: C is the bound in the
+#'   smoothness class specified in sclass. The default sclass is T, see RDHonest
+#'   for details. C must be specified by the user.
 #'
 #' @return List with five elements: \tabular{ll}{ \code{rd} \tab Output from
-#'   rdrobust using the selected covariates, see rdrobust for a description of
-#'   the output, the estimator can be found in rd$Estimate. \cr \code{covs} \tab
-#'   Vector of selected covariate indices. \cr \code{b} \tab Bandwidth used for
-#'   model selection (as returned from rdbwselect without covariates if b=NULL).
-#'   \cr \code{h} \tab Bandwidth used for the estimation (as returned from
-#'   rdbwselect with the selected covariates if h=NULL). \cr \code{Z} \tab pars
-#'   Vector of length p containing the estimated parameters of the covariates.}
+#'   rdrobust or RDHonest (depending on the choice of rd) using the selected
+#'   covariates, see rdrobust or RDHonest for a description of the output, the
+#'   estimator can be found in rd$Estimate (for rdrobust) or in rd$estimate (for
+#'   RDHonest). \cr \code{covs} \tab Vector of selected covariate indices. \cr
+#'   \code{b} \tab Bandwidth used for model selection \cr \code{h} \tab
+#'   Bandwidth used for the estimation \cr \code{Z} \tab pars Vector of length p
+#'   containing the estimated parameters of the covariates.}
 #'
 #'
 #' @section Authors: Alexander Kreiss, LSE, United Kingdom.
@@ -123,7 +123,7 @@
 #' @seealso \code{\link{fourier_basis}}, \code{\link{interaction_terms}},
 #'   \code{\link{cross_interactions}}
 #' @export
-HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL,tpc,kernel="triangular",alpha=0.05,M=NULL,L=100,OPC=50,My,My_tilde,sclass="T") {
+HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL,tpc,kernel="triangular",alpha=0.05,M=NULL,L=100,OPC=50,C,sclass="T") {
   p <- dim(Z)[2]
   n <- length(Y)
 
@@ -146,7 +146,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
       bout <- rdrobust::rdbwselect(Y,X,c=c,bwselect="mserd",kernel=kernel)
       b <- bout$bws[1]
     } else {
-      bout <- RDHonest::RDOptBW(Y~X,cutoff=c,M=My,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-niveau,sclass=sclass,order=1)
+      bout <- RDHonest::RDOptBW(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-niveau,sclass=sclass,order=1)
       b <- bout$h[1]
     }
   }
@@ -157,7 +157,6 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
   relevant_indices <- which(kernel_factor>0)
 
   ## Transform Data
-  T     <- X>=c
   Ymod  <- Y[relevant_indices]
   Tmod  <- T[relevant_indices]
   Xmod  <- X[relevant_indices]-c
@@ -219,7 +218,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
         Sigma <- solve(Sigma22)%*%Sigma21
         Ytilde <- Y-Z[,sig_cov]%*%Sigma
 
-        hout <- RDHonest::RDOptBW(Ytilde~X,cutoff=c,M=My_tilde,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-niveau,sclass=sclass,order=1)
+        hout <- RDHonest::RDOptBW(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-niveau,sclass=sclass,order=1)
         h <- hout$h[1]
       }
     }
@@ -230,13 +229,13 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
     if(rd=="robust") {
       RDfit <- rdrobust::rdrobust(Y,X,c=c,h=h,b=h,kernel=kernel,level=niveau*100)
     } else {
-      RDfit <- RDHonest::RDHonest(Y~X,cutoff=c,M=My,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-niveau,sclass=sclass,order=1)
+      RDfit <- RDHonest::RDHonest(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-niveau,sclass=sclass,order=1)
     }
   } else {
     if(rd=="robust") {
       RDfit <- rdrobust::rdrobust(Y,X,c=c,h=h,b=h,covs=Z[,sig_cov],kernel=kernel,level=niveau*100)
     } else {
-      RDfit <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=My,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-niveau,sclass=sclass,order=1)
+      RDfit <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-niveau,sclass=sclass,order=1)
     }
   }
 

@@ -9,6 +9,8 @@ HighDim_rd(
   X,
   Z,
   c = 0,
+  rd = "robust",
+  niveau = 0.95,
   b = NULL,
   bfactor = 1,
   h = NULL,
@@ -17,7 +19,9 @@ HighDim_rd(
   alpha = 0.05,
   M = NULL,
   L = 100,
-  OPC = 50
+  OPC = 50,
+  C,
+  sclass = "T"
 )
 }
 \arguments{
@@ -30,6 +34,14 @@ covariate).}
 
 \item{c}{Cutoff point for treatment, individuals with X>=c are treated,
 default is c=0.}
+
+\item{rd}{Sets which RD functions should be used to find bandwidths,
+estimators and confidence sets. If "honest", then the RDHonest package is
+used. In this case the user has to specify C and should be aware of sclass.
+If "robust", then the rdrobust package is used.}
+
+\item{niveau}{Niveau of the computed confidence set, between 0 and 1. Default
+is 0.95.}
 
 \item{b}{Reference bandwidth used for doing the model selection step. If
 b=NULL, the default, bandwidth selection from rdrobust without covariates
@@ -57,25 +69,25 @@ weight and OPC is specified by the user.}
 estimation, possible choices are triangular (the default), epanechnikov,
 uniform.}
 
-\item{alpha, M, L}{Parameters for "LV" method for tuning parameter choice, ignored
-if tpc!="LV".}
+\item{alpha, M, L}{Parameters for "LV" method for tuning parameter choice,
+ignored if tpc!="LV".}
 
 \item{OPC}{Parameter for "OPC" method for tuning parameter choice, ignored if
 tpc!="OPC".}
+
+\item{C, sclass}{Parameters which are used for RDHonest: C is the bound in the
+smoothness class specified in sclass. The default sclass is T, see RDHonest
+for details. C must be specified by the user.}
 }
 \value{
-List with five elements:
-\tabular{ll}{
-\code{rd} \tab Output from rdrobust using the selected covariates, see
-rdrobust for a description of the output, the estimator can be found in
-rd$Estimate. \cr
-\code{covs} \tab Vector of selected covariate indices. \cr
-\code{b} \tab Bandwidth used for model selection (as returned from
-rdbwselect without covariates if b=NULL). \cr
-\code{h} \tab Bandwidth used for the estimation (as returned from
-rdbwselect with the selected covariates if h=NULL). \cr
-\code{Z} \tab pars Vector of length p containing the estimated parameters
-of the covariates.}
+List with five elements: \tabular{ll}{ \code{rd} \tab Output from
+rdrobust or RDHonest (depending on the choice of rd) using the selected
+covariates, see rdrobust or RDHonest for a description of the output, the
+estimator can be found in rd$Estimate (for rdrobust) or in rd$estimate (for
+RDHonest). \cr \code{covs} \tab Vector of selected covariate indices. \cr
+\code{b} \tab Bandwidth used for model selection \cr \code{h} \tab
+Bandwidth used for the estimation \cr \code{Z} \tab pars Vector of length p
+containing the estimated parameters of the covariates.}
 }
 \description{
 \code{HighDim_rd} function computes the treatment effect estimator in an RD
@@ -99,23 +111,22 @@ quickest method is OPC. \code{bfactor} allows to deliberately use smaller or
 larger bandwidths for the model selection.
 }
 \section{Authors}{
-
-Alexander Kreiss, LSE, United Kingdom. \email{a.kreiss@lse.ac.uk}
+ Alexander Kreiss, LSE, United Kingdom.
+\email{a.kreiss@lse.ac.uk}
 
 Christoph Rothe, University of Mannheim, Germany
 }
 
 \section{References}{
-
-Belloni, A., Chernozhukov, V. and Hansen, C. (2013): Inference on treatment
-effects after selection among high-dimensional controls. The Review of
-Economic Studies, 81, 608-650
+ Belloni, A., Chernozhukov, V. and Hansen, C. (2013):
+Inference on treatment effects after selection among high-dimensional
+controls. The Review of Economic Studies, 81, 608-650
 
 Kreiss, A. and Rothe, C. (2021): Inference in Regression Discontinuity
 Designs with High-Dimensional Covariates. arxiv 2110.13725
 
-Lederer, J. and Vogt, M. (2020): Estimating the Lasso's Effective Noise. arxiv
-2004.11554
+Lederer, J. and Vogt, M. (2020): Estimating the Lasso's Effective Noise.
+arxiv 2004.11554
 }
 
 \examples{
