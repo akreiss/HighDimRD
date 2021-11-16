@@ -13,7 +13,7 @@ cross_interactions(z1, z2, ident = "")
 }
 \value{
 n x (p1*p2) Matrix which contains the cross interactions
-z1\link{,i}*z2\link{,j} for i=1,...,p1 and j=1,...,p2. The column name gives involved
+z1[,i]*z2[,j] for i=1,...,p1 and j=1,...,p2. The column name gives involved
 covariates.
 }
 \description{
