@@ -115,10 +115,15 @@
 #' Z1 <- fourier_basis(Z,4)
 #' Z_HighDim <- cbind(Z,interaction_terms(Z),Z1,interaction_terms(Z1))
 #'
-#' ## Compute estimate with model selection
-#' cov_rd_CV  <- HighDim_rd(Y,x,Z_HighDim,tpc="CV")
-#' cov_rd_BCH <- HighDim_rd(Y,x,Z_HighDim,tpc="BCH")
-#' cov_rd_LV  <- HighDim_rd(Y,x,Z_HighDim,tpc="LV")}
+#' ## Compute estimate with model selection using rdrobust
+#' cov_rd_CV_robust  <- HighDim_rd(Y,x,Z_HighDim,tpc="CV" ,rd="robust")
+#' cov_rd_BCH_robust <- HighDim_rd(Y,x,Z_HighDim,tpc="BCH",rd="robust")
+#' cov_rd_LV_robust  <- HighDim_rd(Y,x,Z_HighDim,tpc="LV" ,rd="robust")
+#'
+#' ## Compute estimate with model selection using RDHonest
+#' cov_rd_CV_honest  <- HighDim_rd(Y,x,Z_HighDim,tpc="CV" ,rd="honest",C=30)
+#' cov_rd_BCH_honest <- HighDim_rd(Y,x,Z_HighDim,tpc="BCH",rd="honest",C=30)
+#' cov_rd_LV_honest  <- HighDim_rd(Y,x,Z_HighDim,tpc="LV" ,rd="honest",C=30)}
 #'
 #' @seealso \code{\link{fourier_basis}}, \code{\link{interaction_terms}},
 #'   \code{\link{cross_interactions}}
@@ -214,7 +219,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
         cov_fit <- lm(Z[,sig_cov]~1+X+T+X*T,weights=kernel_factor)
         v <- cov_fit$residuals
         Sigma22 <- t(v)%*%(v*kernel_factor)/n
-        Sigma21 <- colSums(v*(kernel_factor*Y))/n
+        Sigma21 <- colSums(as.matrix(v*(kernel_factor*Y)))/n
         Sigma <- solve(Sigma22)%*%Sigma21
         Ytilde <- Y-Z[,sig_cov]%*%Sigma
 
