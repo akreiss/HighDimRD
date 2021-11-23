@@ -21,7 +21,8 @@ HighDim_rd(
   L = 100,
   OPC = 50,
   C,
-  sclass = "T"
+  sclass = "H",
+  se.initial = "nn"
 )
 }
 \arguments{
@@ -75,9 +76,10 @@ ignored if tpc!="LV".}
 \item{OPC}{Parameter for "OPC" method for tuning parameter choice, ignored if
 tpc!="OPC".}
 
-\item{C, sclass}{Parameters which are used for RDHonest: C is the bound in the
-smoothness class specified in sclass. The default sclass is T, see RDHonest
-for details. C must be specified by the user.}
+\item{C, sclass, se.initial}{Parameters which are used for RDHonest: C is the
+bound in the smoothness class specified in sclass. The default sclass is H,
+see RDHonest for details. C must be specified by the user. See RDHonest for
+a description of se.initial.}
 }
 \value{
 List with five elements: \tabular{ll}{ \code{rd} \tab Output from
