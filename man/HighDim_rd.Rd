@@ -22,7 +22,7 @@ HighDim_rd(
   OPC = 50,
   C,
   sclass = "H",
-  se.initial = "nn"
+  se.initial = "SilvermanNN"
 )
 }
 \arguments{

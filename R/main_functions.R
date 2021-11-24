@@ -129,7 +129,7 @@
 #' @seealso \code{\link{fourier_basis}}, \code{\link{interaction_terms}},
 #'   \code{\link{cross_interactions}}
 #' @export
-HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL,tpc,kernel="triangular",alpha=0.05,M=NULL,L=100,OPC=50,C,sclass="H",se.initial="nn") {
+HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL,tpc,kernel="triangular",alpha=0.05,M=NULL,L=100,OPC=50,C,sclass="H",se.initial="SilvermanNN") {
   p <- dim(Z)[2]
   n <- length(Y)
 
