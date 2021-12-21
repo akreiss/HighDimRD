@@ -10,7 +10,7 @@ HighDim_rd(
   Z,
   c = 0,
   rd = "robust",
-  niveau = 0.95,
+  level = 0.95,
   b = NULL,
   bfactor = 1,
   h = NULL,
@@ -41,7 +41,7 @@ estimators and confidence sets. If "honest", then the RDHonest package is
 used. In this case the user has to specify C and should be aware of sclass.
 If "robust", then the rdrobust package is used.}
 
-\item{niveau}{Niveau of the computed confidence set, between 0 and 1. Default
+\item{level}{Level of the computed confidence set, between 0 and 1. Default
 is 0.95.}
 
 \item{b}{Reference bandwidth used for doing the model selection step. If

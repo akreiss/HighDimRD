@@ -9,7 +9,7 @@ cross_interactions(z1, z2, ident = "")
 \arguments{
 \item{z1}{n x p1 dimensional matrix, each column corresponds to one covariate.}
 
-\item{z2}{n x p2 dimensional maitrx, each column correpsonds to one covariate.}
+\item{z2}{n x p2 dimensional matrix, each column corresponds to one covariate.}
 }
 \value{
 n x (p1*p2) Matrix which contains the cross interactions

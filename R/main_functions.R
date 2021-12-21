@@ -31,7 +31,7 @@
 #'   estimators and confidence sets. If "honest", then the RDHonest package is
 #'   used. In this case the user has to specify C and should be aware of sclass.
 #'   If "robust", then the rdrobust package is used.
-#' @param niveau Niveau of the computed confidence set, between 0 and 1. Default
+#' @param level Level of the computed confidence set, between 0 and 1. Default
 #'   is 0.95.
 #' @param b Reference bandwidth used for doing the model selection step. If
 #'   b=NULL, the default, bandwidth selection from rdrobust without covariates
@@ -129,7 +129,7 @@
 #' @seealso \code{\link{fourier_basis}}, \code{\link{interaction_terms}},
 #'   \code{\link{cross_interactions}}
 #' @export
-HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL,tpc,kernel="triangular",alpha=0.05,M=NULL,L=100,OPC=50,C,sclass="H",se.initial="SilvermanNN") {
+HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,tpc,kernel="triangular",alpha=0.05,M=NULL,L=100,OPC=50,C,sclass="H",se.initial="SilvermanNN") {
   p <- dim(Z)[2]
   n <- length(Y)
 
@@ -152,7 +152,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
       bout <- rdrobust::rdbwselect(Y,X,c=c,bwselect="mserd",kernel=kernel)
       b <- bout$bws[1]
     } else {
-      bout <- RDHonest::RDOptBW(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-niveau,sclass=sclass,order=1,se.initial=se.initial)
+      bout <- RDHonest::RDOptBW(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
       b <- bout$h[1]
     }
   }
@@ -224,7 +224,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
         Sigma <- solve(Sigma22)%*%Sigma21
         Ytilde <- Y-Z[,sig_cov]%*%Sigma
 
-        hout <- RDHonest::RDOptBW(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-niveau,sclass=sclass,order=1,se.initial=se.initial)
+        hout <- RDHonest::RDOptBW(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
         h <- hout$h[1]
       }
     }
@@ -233,15 +233,15 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
   ## Estimation
   if(length(sig_cov)==0) {
     if(rd=="robust") {
-      RDfit <- rdrobust::rdrobust(Y,X,c=c,h=h,b=h,kernel=kernel,level=niveau*100)
+      RDfit <- rdrobust::rdrobust(Y,X,c=c,h=h,b=h,kernel=kernel,level=level*100)
     } else {
-      RDfit <- RDHonest::RDHonest(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-niveau,sclass=sclass,order=1,se.initial=se.initial)
+      RDfit <- RDHonest::RDHonest(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
     }
   } else {
     if(rd=="robust") {
-      RDfit <- rdrobust::rdrobust(Y,X,c=c,h=h,b=h,covs=Z[,sig_cov],kernel=kernel,level=niveau*100)
+      RDfit <- rdrobust::rdrobust(Y,X,c=c,h=h,b=h,covs=Z[,sig_cov],kernel=kernel,level=level*100)
     } else {
-      RDfit <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-niveau,sclass=sclass,order=1,se.initial=se.initial)
+      RDfit <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
     }
   }
 
@@ -255,7 +255,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",niveau=0.95,b=NULL,bfactor=1,h=NULL
 #' that is, the products of columns, provided in z.
 #'
 #'
-#' @param z n x p matrix, each column correpsonds to one covariate
+#' @param z n x p matrix, each column corresponds to one covariate
 #' @return Matrix with n rows and each columns, corresponds to one interaction,
 #'   i.e., z\[,i\]*z\[,j\] for i,j=1,...,p and i<j. The column name gives the exact
 #'   variables which were interacted.
@@ -295,7 +295,7 @@ interaction_terms <- function(z) {
 #'
 #'
 #' @param z1 n x p1 dimensional matrix, each column corresponds to one covariate.
-#' @param z2 n x p2 dimensional maitrx, each column correpsonds to one covariate.
+#' @param z2 n x p2 dimensional matrix, each column corresponds to one covariate.
 #'
 #'
 #' @return n x (p1*p2) Matrix which contains the cross interactions
