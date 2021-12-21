@@ -7,7 +7,7 @@
 interaction_terms(z)
 }
 \arguments{
-\item{z}{n x p matrix, each column correpsonds to one covariate}
+\item{z}{n x p matrix, each column corresponds to one covariate}
 }
 \value{
 Matrix with n rows and each columns, corresponds to one interaction,
