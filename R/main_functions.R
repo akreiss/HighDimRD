@@ -152,8 +152,8 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,
       bout <- rdrobust::rdbwselect(Y,X,c=c,bwselect="mserd",kernel=kernel)
       b <- bout$bws[1]
     } else {
-      bout <- RDHonest::RDOptBW(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
-      b <- bout$h[1]
+      bout <- RDHonest::RDHonest(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
+      b <- bout$h
     }
   }
 
@@ -224,8 +224,8 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,
         Sigma <- solve(Sigma22)%*%Sigma21
         Ytilde <- Y-Z[,sig_cov]%*%Sigma
 
-        hout <- RDHonest::RDOptBW(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",bw.equal=TRUE,alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
-        h <- hout$h[1]
+        hout <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
+        h <- hout$h
       }
     }
   }
