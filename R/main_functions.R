@@ -152,7 +152,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,
       b <- bout$bws[1]
     } else {
       bout <- RDHonest::RDHonest(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",alpha=1-level,sclass=sclass)
-      b <- bout$h
+      b <- bout$coefficients$bandwidth
     }
   }
 
@@ -224,7 +224,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,
         Ytilde <- Y-Z[,sig_cov]%*%Sigma
 
         hout <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",alpha=1-level,sclass=sclass)
-        h <- hout$h
+        h <- hout$coefficients$bandwidth
       }
     }
   }
