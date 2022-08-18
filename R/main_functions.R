@@ -58,10 +58,9 @@
 #'   ignored if tpc!="LV".
 #' @param OPC Parameter for "OPC" method for tuning parameter choice, ignored if
 #'   tpc!="OPC".
-#' @param C,sclass,se.initial Parameters which are used for RDHonest: C is the
+#' @param C,sclass Parameters which are used for RDHonest: C is the
 #'   bound in the smoothness class specified in sclass. The default sclass is H,
-#'   see RDHonest for details. C must be specified by the user. See RDHonest for
-#'   a description of se.initial.
+#'   see RDHonest for details. C must be specified by the user. 
 #'
 #' @return List with five elements: \tabular{ll}{ \code{rd} \tab Output from
 #'   rdrobust or RDHonest (depending on the choice of rd) using the selected
@@ -129,7 +128,7 @@
 #' @seealso \code{\link{fourier_basis}}, \code{\link{interaction_terms}},
 #'   \code{\link{cross_interactions}}
 #' @export
-HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,tpc,kernel="triangular",alpha=0.05,M=NULL,L=100,OPC=50,C,sclass="H",se.initial="SilvermanNN") {
+HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,tpc,kernel="triangular",alpha=0.05,M=NULL,L=100,OPC=50,C,sclass="H") {
   p <- dim(Z)[2]
   n <- length(Y)
 
@@ -152,7 +151,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,
       bout <- rdrobust::rdbwselect(Y,X,c=c,bwselect="mserd",kernel=kernel)
       b <- bout$bws[1]
     } else {
-      bout <- RDHonest::RDHonest(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
+      bout <- RDHonest::RDHonest(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",alpha=1-level,sclass=sclass)
       b <- bout$h
     }
   }
@@ -224,7 +223,7 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,
         Sigma <- solve(Sigma22)%*%Sigma21
         Ytilde <- Y-Z[,sig_cov]%*%Sigma
 
-        hout <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
+        hout <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",alpha=1-level,sclass=sclass)
         h <- hout$h
       }
     }
@@ -235,13 +234,13 @@ HighDim_rd <- function(Y,X,Z,c=0,rd="robust",level=0.95,b=NULL,bfactor=1,h=NULL,
     if(rd=="robust") {
       RDfit <- rdrobust::rdrobust(Y,X,c=c,h=h,b=h,kernel=kernel,level=level*100)
     } else {
-      RDfit <- RDHonest::RDHonest(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
+      RDfit <- RDHonest::RDHonest(Y~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-level,sclass=sclass)
     }
   } else {
     if(rd=="robust") {
       RDfit <- rdrobust::rdrobust(Y,X,c=c,h=h,b=h,covs=Z[,sig_cov],kernel=kernel,level=level*100)
     } else {
-      RDfit <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-level,sclass=sclass,order=1,se.initial=se.initial)
+      RDfit <- RDHonest::RDHonest(Ytilde~X,cutoff=c,M=C,kern=kernel,opt.criterion="FLCI",h=h,alpha=1-level,sclass=sclass)
     }
   }
 
