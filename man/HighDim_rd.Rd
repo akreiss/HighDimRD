@@ -97,7 +97,7 @@ setting when a large list of covariates is supplied by the user.
 }
 \details{
 For the exact functionality of \code{HighDim_rd}, we refer to Kreiss and
-Rothe (2021). The vectors \code{Y},\code{X} contain the responses and the
+Rothe (2023). The vectors \code{Y},\code{X} contain the responses and the
 running variable, respectively, that is, an individual is exposed to the
 treatment if \code{X>=c}. The matrix \code{Z} contains the covariates (each
 column contains one covariate). The lengths of \code{Y} and \code{X} must
@@ -123,6 +123,10 @@ Christoph Rothe, University of Mannheim, Germany
  Belloni, A., Chernozhukov, V. and Hansen, C. (2013):
 Inference on treatment effects after selection among high-dimensional
 controls. The Review of Economic Studies, 81, 608-650
+
+Kreiss, A. and Rothe, C. (2023): Inference in regression discontinuity
+designs with high-dimensional covariates. The Econometrics Journal, Volume 26, 
+Issue 2, May 2023, Pages 105–123
 
 Kreiss, A. and Rothe, C. (2021): Inference in Regression Discontinuity
 Designs with High-Dimensional Covariates. arxiv 2110.13725
