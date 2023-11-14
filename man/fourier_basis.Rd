@@ -21,7 +21,7 @@ j=1,...,p. The column names are of the form "FB j sin r" or "FB j cos r".
 }
 \section{Authors}{
 
-Alexander Kreiss, LSE, United Kingdom. \email{a.kreiss@lse.ac.uk}
+Alexander Kreiss, Leipzig University, Germany. \email{alexander.kreiss@math.uni-leipzig.de}
 
 Christoph Rothe, University of Mannheim, Germany
 }
