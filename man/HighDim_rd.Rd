@@ -128,9 +128,6 @@ Kreiss, A. and Rothe, C. (2023): Inference in regression discontinuity
 designs with high-dimensional covariates. The Econometrics Journal, Volume 26, 
 Issue 2, May 2023, Pages 105–123
 
-Kreiss, A. and Rothe, C. (2021): Inference in Regression Discontinuity
-Designs with High-Dimensional Covariates. arxiv 2110.13725
-
 Lederer, J. and Vogt, M. (2020): Estimating the Lasso's Effective Noise.
 arxiv 2004.11554
 }
