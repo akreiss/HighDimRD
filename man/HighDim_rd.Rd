@@ -113,8 +113,8 @@ quickest method is OPC. \code{bfactor} allows to deliberately use smaller or
 larger bandwidths for the model selection.
 }
 \section{Authors}{
- Alexander Kreiss, LSE, United Kingdom.
-\email{a.kreiss@lse.ac.uk}
+ Alexander Kreiss, Leipzig University, Germany.
+\email{alexander.kreiss@math.uni-leipzig.de}
 
 Christoph Rothe, University of Mannheim, Germany
 }
