@@ -22,7 +22,8 @@ of columns, between the matrices z1 nad z2.
 }
 \section{Authors}{
 
-Alexander Kreiss, LSE, United Kingdom. \email{a.kreiss@lse.ac.uk}
+Alexander Kreiss, Leipzig University, Germany. \email{alexander.kreiss@math.uni-leipzig.de}
+
 
 Christoph Rothe, University of Mannheim, Germany
 }
